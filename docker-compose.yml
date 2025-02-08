@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    # The FastAPI application service
+    build: 
+      context: .
+      # dockerfile: Dockerfile
+    container_name: fastapiapp
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - .:/app
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    # The MongoDB service
+    image: mongo:5.0
+    container_name: fastapiapp_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:  
+
+networks:
+  app-network:  
+    driver: bridge
