@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapiapp-deployment
+  namespace: my-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapiapp
+  template:
+    metadata:
+      labels:
+        app: fastapiapp
+    spec:
+      containers:
+      - name: fastapiapp-container
+        image: ilievaana/fastapiapp:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: fastapiapp-configmap    
+              key: MONGO_URI             
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: fastapiapp-secrets
+              key: db-username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fastapiapp-secrets
+              key: db-password
