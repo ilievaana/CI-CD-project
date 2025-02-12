@@ -4,10 +4,9 @@ metadata:
   name: fastapiapp-service
   namespace: my-namespace
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 8000
-      nodePort: 30080
   selector:
     app: fastapiapp

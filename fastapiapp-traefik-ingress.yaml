@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastapiapp-traefik-ingress
+  namespace: my-namespace
+  annotations:
+   traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: "traefik"
+  rules:
+    - host: myapp.local
+      http:
+        paths:
+          - path: /docs
+            pathType: Prefix
+            backend:
+              service:
+                name: fastapiapp-service
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fastapiapp-service
+                port:
+                  number: 80
